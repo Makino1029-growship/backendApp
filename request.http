@@ -1,0 +1,29 @@
+http://localhost:8080/api/books
+
+###
+
+GET http://localhost:8080/api/
+###
+
+DELETE http://localhost:8080/api/books/633471d481d8ae4ba04fbca9
+###
+
+
+POST http://localhost:8080/api/create
+Content-Type: application/json
+
+{
+    "name": "maaakiidddno",
+    "address": "aaaa",
+    "tel": 2222,
+    "degree": "ssss"
+}
+
+###
+
+PATCH http://localhost:8080/api/books/615a27f918837e7774193f85
+Content-Type: application/json
+
+{
+    "rating": 4
+}
