@@ -1,6 +1,6 @@
 import express from "express";
-import mysql from "mysql2";
 import apiRoutes from "./index.mjs";
+import mysql from "mysql2";
 import cors from "cors";
 import env from 'dotenv';
 env.config( "./.env");
