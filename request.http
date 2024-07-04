@@ -2,7 +2,7 @@ http://localhost:8080/api/books
 
 ###
 
-GET http://localhost:8080/api/
+GET http://localhost:8080/api/show
 ###
 
 DELETE http://localhost:8080/api/books/633471d481d8ae4ba04fbca9
