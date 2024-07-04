@@ -13,6 +13,43 @@ const validation = [
   body("employeeNum").isInt({ min: 1 }).isLength({ min: 5, max: 5 }).matches(/^\d+$/),
 ];
 
+// /showにGETリクエストが来た場合の処理
+router.get("/show", function (req, res) {
+  db.query("SELECT * FROM users", (err, result) => {
+    if (err) {
+      console.error(
+        "データベースからのデータ取得中にエラーが発生しました:",
+        err
+      );
+      res.status(500).json({ error: "データベースエラー" });
+    } else {
+      console.log(JSON.stringify(result)); 
+      res.status(200).json(result);
+      console.log("Request received");
+    }
+  });
+});
+
+// /show/idにGETリクエストが来た場合の処理
+router.get("/show/:id", function (req, res) {
+  const id = req.params.id;
+  const queryGetDetail = `SELECT * FROM users WHERE id = ${id}`;
+
+  db.query(queryGetDetail, (err, result) => {
+    if (err) {
+      console.error(
+        "データベースからのデータ取得中にエラーが発生しました:",
+        err
+      );
+      res.status(500).json({ error: "データベースエラー" });
+    } else {
+      console.log(JSON.stringify(result)); 
+      res.status(200).json(result); 
+      console.log("Request received");
+    }
+  });
+});
+
 // /createにPOSTリクエストが来たときの処理
 // バリデーション突破できなかった場合はデータを追加しない
 router.post("/create", validation, async (req, res) => {
