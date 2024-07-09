@@ -75,4 +75,26 @@ router.post("/create", validation, async (req, res) => {
   });
 });
 
+
+// /update/:idにリクエストが来た場合の処理
+router.put("/update", function (req, res) {
+  const id = req.query.id; 
+  const newData = req.body; // 
+
+  db.query("UPDATE users SET ? WHERE id = ?", [newData, id], (err, result) => {
+    if (err) {
+      console.error(
+        "データベースからのデータ取得中にエラーが発生しました:",
+        err
+      );
+      res.status(500).json({ error: "データベースエラー" });
+    } else {
+      console.log(JSON.stringify(result)); 
+      res.status(200).json(result);
+      console.log("Update Request received");
+    }
+  });
+});
+
+
 export default router;
