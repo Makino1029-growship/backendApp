@@ -23,19 +23,19 @@ router.get("/show", function (req, res) {
       );
       res.status(500).json({ error: "データベースエラー" });
     } else {
-      console.log(JSON.stringify(result)); 
+      // console.log(JSON.stringify(result)); 
       res.status(200).json(result);
-      console.log("Request received");
+      console.log("Get Request received");
     }
   });
 });
 
 // /show/idにGETリクエストが来た場合の処理
-router.get("/show/:id", function (req, res) {
-  const id = req.params.id;
-  const queryGetDetail = `SELECT * FROM users WHERE id = ${id}`;
-
-  db.query(queryGetDetail, (err, result) => {
+router.get("/detail", function (req, res) {
+  const id = req.query.id;
+  // const queryGetDetail = `SELECT * FROM users WHERE id = ${id}`;
+console.log("id:",req.query.id)
+  db.query("SELECT * FROM users WHERE id = ?", [id], (err, result) => {
     if (err) {
       console.error(
         "データベースからのデータ取得中にエラーが発生しました:",
@@ -45,7 +45,7 @@ router.get("/show/:id", function (req, res) {
     } else {
       console.log(JSON.stringify(result)); 
       res.status(200).json(result); 
-      console.log("Request received");
+      console.log("Detail Request received");
     }
   });
 });
@@ -60,6 +60,7 @@ router.post("/create", validation, async (req, res) => {
 
   // リクエスト内容（データ）を取得する
   const newPerson = req.body;
+  console.log("reqbody",req.body)
 
   //usersテーブルに社員情報を追加
   db.query("INSERT INTO users SET ?", [newPerson], (err, result) => {
