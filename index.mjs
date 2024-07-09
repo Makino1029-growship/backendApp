@@ -16,6 +16,17 @@ const validation = [
     .matches(/^\d+$/),
 ];
 
+const editValidation = [
+  body("newData.name").notEmpty(),
+  body("newData.address").notEmpty(),
+  body("newData.tel").isLength({ min: 10, max: 11 }).matches(/^\d+$/),
+  body("newData.degree").notEmpty(),
+  body("newData.employeeNum")
+    .isInt({ min: 1 })
+    .isLength({ min: 5, max: 5 })
+    .matches(/^\d+$/),
+];
+
 // /showにGETリクエストが来た場合の処理
 router.get("/show", function (req, res) {
   db.query("SELECT * FROM users", (err, result) => {
@@ -75,12 +86,15 @@ router.post("/create", validation, async (req, res) => {
   });
 });
 
-
-// /update/:idにリクエストが来た場合の処理
-router.put("/update", function (req, res) {
-  const id = req.query.id; 
-  const newData = req.body; // 
-
+// /updateにリクエストが来た場合の処理
+router.put("/update", editValidation, function (req, res) {
+  const errors = validationResult(req);
+  console.log(errors);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const id = req.body.id;
+  const newData = req.body.newData;
   db.query("UPDATE users SET ? WHERE id = ?", [newData, id], (err, result) => {
     if (err) {
       console.error(
@@ -89,12 +103,11 @@ router.put("/update", function (req, res) {
       );
       res.status(500).json({ error: "データベースエラー" });
     } else {
-      console.log(JSON.stringify(result)); 
+      console.log(JSON.stringify(result));
       res.status(200).json(result);
-      console.log("Update Request received");
     }
   });
+  console.log("Update Request received");
 });
-
 
 export default router;
